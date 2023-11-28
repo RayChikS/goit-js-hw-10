@@ -24,16 +24,30 @@ breedSelect.addEventListener('change', function () {
   catInfo.innerHTML = '';
 
   fetchCatByBreed(selectedBreedId)
-    .then(breed => {
-      const catImg = document.createElement('img');
-      catImg.src = `${breed.url}`;
-      const catTitle = document.createElement('h2');
-      catTitle.textContent = `${breed.name}`;
-      const catText = document.createElement('p');
-      catText.textContent = `${breed.temperament}`;
-      catInfo.appendChild(catImg);
-      catInfo.appendChild(catTitle);
-      catInfo.appendChild(catText);
+    .then(breeds => {
+      if (
+        Array.isArray(breeds) &&
+        breeds.length > 0 &&
+        breeds.breeds &&
+        breeds.breeds.length > 0
+      ) {
+        const catData = breeds;
+
+        const catImg = document.createElement('img');
+        catImg.src = catData.breeds.url;
+        const catTitle = document.createElement('h2');
+        catTitle.textContent = catData.breeds.name;
+        const catText = document.createElement('p');
+        catText.textContent = catData.breeds.temperament;
+        catInfo.appendChild(catImg);
+        catInfo.appendChild(catTitle);
+        catInfo.appendChild(catText);
+      } else {
+        console.error(
+          'Incomplete or no data received for the selected breed:',
+          breeds
+        );
+      }
     })
     .catch(error => {
       console.error('Error fetching cat by breed:', error);

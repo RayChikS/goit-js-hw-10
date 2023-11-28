@@ -2,11 +2,13 @@ import axios from 'axios';
 
 axios.defaults.headers.common['x-api-key'] =
   'live_FyckgQNH5X5BXMHuuWj8EgkfY7FcewAgVs2OZscIRCnSDI12cNmbH8Fu9cxZ5GpP';
-const urlBreeds = 'https://api.thecatapi.com/v1/breeds';
+const catApiUrl = 'https://api.thecatapi.com/v1';
 
 function fetchBreeds() {
+  const url = `${catApiUrl}/breeds`;
+
   return axios
-    .get(urlBreeds)
+    .get(url)
     .then(response => response.data)
     .catch(error => {
       console.log(error);
@@ -15,8 +17,10 @@ function fetchBreeds() {
 }
 
 function fetchCatByBreed(breedId) {
+  const url = `${catApiUrl}/images/search?breed_ids=${breedId}`;
+
   return axios
-    .get(`https://api.thecatapi.com/v1/images/search?breed_ids=${breedId}`)
+    .get(url)
     .then(response => response.data)
     .catch(error => {
       console.log(error);
