@@ -1,0 +1,2 @@
+body{background-color:#d7d7d7}.loader{width:48px;height:48px;box-sizing:border-box;border:5px solid #fff;border-bottom-color:#ff3d00;border-radius:50%;animation:rotation 1s linear infinite;display:inline-block}@keyframes rotation{0%{transform:rotate(0deg)}to{transform:rotate(360deg)}}.is-hidden{width:1px;height:1px;white-space:nowrap;-webkit-clip-path:inset(100%);clip-path:inset(100%);clip:rect(0 0 0 0);border:0;margin:-1px;padding:0;position:absolute;overflow:hidden}
+/*# sourceMappingURL=index.80a9ee3d.css.map */
