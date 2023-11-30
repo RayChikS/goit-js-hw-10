@@ -14,6 +14,7 @@ loader.style.display = 'block';
 fetchBreeds()
   .then(breeds => {
     loader.style.display = 'none';
+    breedSelect.classList.remove('is-hidden');
 
     for (let i = 0; i < breeds.length; i++) {
       let option = document.createElement('option');
@@ -24,7 +25,8 @@ fetchBreeds()
   })
   .catch(error => {
     loader.style.display = 'none';
-    // showError();
+    breedSelect.classList.add('is-hidden');
+
     Notiflix.Notify.failure(
       'Oops! Something went wrong! Try reloading the page!'
     );
@@ -39,6 +41,7 @@ breedSelect.addEventListener('change', function () {
   fetchCatByBreed(selectedBreedId)
     .then(breeds => {
       loader.style.display = 'none';
+      breedSelect.classList.remove('is-hidden');
 
       if (
         Array.isArray(breeds) &&
@@ -48,41 +51,33 @@ breedSelect.addEventListener('change', function () {
       ) {
         const catData = breeds[0];
 
-        const imgBox = document.createElement('div');
-        imgBox.style.maxWidth = '400px';
-        imgBox.style.maxHeight = '400px';
-        const catImg = document.createElement('img');
-        catImg.src = catData.url;
-        catImg.style.border = '1px solid black';
-        catImg.style.width = '100%';
-        catImg.style.height = 'auto';
-        imgBox.appendChild(catImg);
+        // Create image box
+        const imgBox = `
+        <div style="max-width: 400px; max-height: 400px;">
+          <img src="${catData.url}" style="border: 1px solid black; width: 100%; height: auto;">
+        </div>
+      `;
 
-        const textBox = document.createElement('div');
-        const catTitle = document.createElement('h2');
-        catTitle.textContent = catData.breeds[0].name;
-        const catDescr = document.createElement('p');
-        catDescr.textContent = catData.breeds[0].description;
-        catDescr.style.width = '400px';
-        const span = document.createElement('span');
-        span.textContent = 'Temperament: ';
-        span.style.fontWeight = '700';
-        const catText = document.createElement('p');
-        catText.textContent = catData.breeds[0].temperament;
-        catText.prepend(span);
-        textBox.appendChild(catTitle);
-        textBox.appendChild(catDescr);
-        textBox.appendChild(catText);
+        // Create text box
+        const textBox = `
+        <div>
+          <h2>${catData.breeds[0].name}</h2>
+          <p style="width: 400px;">${catData.breeds[0].description}</p>
+          <p><span style="font-weight: 700;">Temperament: </span>${catData.breeds[0].temperament}</p>
+        </div>
+      `;
 
+        // Display cat info
         catInfo.style.display = 'flex';
         catInfo.style.gap = '40px';
-
-        catInfo.appendChild(imgBox);
-        catInfo.appendChild(textBox);
+        catInfo.innerHTML = imgBox + textBox;
       } else {
+        loader.style.display = 'none';
+
         Notiflix.Notify.failure(
           'Oops! Something went wrong! Try reloading the page!'
         );
+        breedSelect.classList.add('is-hidden');
         console.error(
           'Incomplete or no data received for the selected breed:',
           breeds
@@ -90,8 +85,12 @@ breedSelect.addEventListener('change', function () {
       }
     })
     .catch(error => {
+      breedSelect.classList.add('is-hidden');
       Notiflix.Notify.failure(
         'Oops! Something went wrong! Try reloading the page!'
       );
+    })
+    .finally(() => {
+      loader.style.display = 'none';
     });
 });
